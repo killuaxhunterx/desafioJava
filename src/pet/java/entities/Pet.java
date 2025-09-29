@@ -16,7 +16,13 @@ public class Pet {
     public Pet() {
     }
 
-    public Pet(String name, String lastName, PetType tipoPet, PetGender petGender, Address address, int years, double weight, String race) {
+    public Pet(String name, String lastName, PetType tipoPet, PetGender petGender, Address address, int years, double weight, String race) throws IllegalArgumentException{
+        if (name.isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be empty");
+        }
+        if (lastName.isEmpty()) {
+            throw new IllegalArgumentException("Lastname cannot be empty");
+        }
         this.name = name;
         this.lastName = lastName;
         this.tipoPet = tipoPet;

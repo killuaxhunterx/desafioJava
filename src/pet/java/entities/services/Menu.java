@@ -5,7 +5,6 @@ import java.util.Scanner;
 
 public class Menu {
     public static void showMenu() {
-
         System.out.println("------ MENU ----");
         System.out.println(
             "1 - Cadastrar um novo pet\n" +
@@ -17,18 +16,19 @@ public class Menu {
         );
     }
 
-    public static void chooseOptionsMenu() {
+    public static int chooseOptionsMenu() {
         int choice;
         Scanner input = new Scanner(System.in);
         showMenu();
         choice = input.nextInt();
         try {
             while (choice == 0 || choice < 0) {
-                choice = input.nextInt();
                 showMenu();
+                choice = input.nextInt();
             }
         } catch (InputMismatchException e) {
             System.out.println("Input error: " + e.getMessage());
         }
+        return choice;
     }
 }
