@@ -16,13 +16,7 @@ public class Pet {
     public Pet() {
     }
 
-    public Pet(String name, String lastName, PetType tipoPet, PetGender petGender, Address address, int years, double weight, String race) throws IllegalArgumentException{
-        if (name.isEmpty()) {
-            throw new IllegalArgumentException("Name cannot be empty");
-        }
-        if (lastName.isEmpty()) {
-            throw new IllegalArgumentException("Lastname cannot be empty");
-        }
+    public Pet(String name, String lastName, PetType tipoPet, PetGender petGender, Address address, int years, double weight, String race) {
         this.name = name;
         this.lastName = lastName;
         this.tipoPet = tipoPet;
@@ -37,7 +31,10 @@ public class Pet {
         return lastName;
     }
 
-    public void setLastName(String lastName) {
+    public void setLastName(String lastName) throws IllegalArgumentException {
+        if (lastName.isEmpty()) {
+            throw new IllegalArgumentException("Lastname cannot be empty");
+        }
         this.lastName = lastName;
     }
 
@@ -45,7 +42,10 @@ public class Pet {
         return name;
     }
 
-    public void setName(String name) {
+    public void setName(String name) throws IllegalArgumentException{
+        if (name.isEmpty()) {
+            throw new IllegalArgumentException("Name cannot be empty");
+        }
         this.name = name;
     }
 
@@ -85,7 +85,10 @@ public class Pet {
         return weight;
     }
 
-    public void setWeight(double weight) {
+    public void setWeight(double weight) throws IllegalArgumentException {
+        if (weight > 60.0 || weight < 0.5) {
+            throw new IllegalArgumentException("Weight cannot be more than 60 or less than 0,5 kilos");
+        }
         this.weight = weight;
     }
 
