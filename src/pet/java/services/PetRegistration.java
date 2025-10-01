@@ -1,4 +1,4 @@
-package pet.java.entities.services;
+package pet.java.services;
 
 import pet.java.entities.Address;
 import pet.java.entities.Pet;

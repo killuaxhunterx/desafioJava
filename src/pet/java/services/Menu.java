@@ -1,4 +1,4 @@
-package pet.java.entities.services;
+package pet.java.services;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;

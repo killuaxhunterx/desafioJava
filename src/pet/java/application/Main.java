@@ -1,8 +1,7 @@
 package pet.java.application;
 
-import pet.java.entities.Pet;
-import pet.java.entities.services.Menu;
-import pet.java.entities.services.PetRegistration;
+import pet.java.services.Menu;
+import pet.java.services.PetRegistration;
 
 public class Main {
     public static void main(String[] args) {
