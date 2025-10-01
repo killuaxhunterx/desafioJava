@@ -1,9 +1,10 @@
 package pet.java.entities;
 
 public class Address {
-    private int houseNumber;
+    private Integer houseNumber;
     private String city;
     private String street;
+    public final String statusHouseNumber = "NAO INFORMADO";
 
     public Address() {
     }
@@ -18,7 +19,10 @@ public class Address {
         return houseNumber;
     }
 
-    public void setHouseNumber(int houseNumber) {
+    public void setHouseNumber(Integer houseNumber) {
+        if (houseNumber == null || houseNumber == 0) {
+            this.houseNumber = null;
+        }
         this.houseNumber = houseNumber;
     }
 

@@ -6,20 +6,20 @@ import pet.java.entities.enums.PetType;
 public class Pet {
     private String name;
     private String lastName;
-    private PetType tipoPet;
+    private PetType petType;
     private PetGender petGender;
     private Address address;
-    private int years;
+    private double years;
     private double weight;
     private String race;
 
     public Pet() {
     }
 
-    public Pet(String name, String lastName, PetType tipoPet, PetGender petGender, Address address, int years, double weight, String race) {
+    public Pet(String name, String lastName, PetType petType, PetGender petGender, Address address, double years, double weight, String race) {
         this.name = name;
         this.lastName = lastName;
-        this.tipoPet = tipoPet;
+        this.petType = petType;
         this.petGender = petGender;
         this.address = address;
         this.years = years;
@@ -35,6 +35,9 @@ public class Pet {
         if (lastName.isEmpty()) {
             throw new IllegalArgumentException("Lastname cannot be empty");
         }
+        if (!lastName.matches("[a-zA-z0-9 ]*")) {
+            throw new IllegalArgumentException("Last name cannot contain special characters");
+        }
         this.lastName = lastName;
     }
 
@@ -46,15 +49,18 @@ public class Pet {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Name cannot be empty");
         }
+        if (!name.matches("[a-zA-z0-9 ]*")) {
+            throw new IllegalArgumentException("Name cannot contain special characters");
+        }
         this.name = name;
     }
 
-    public PetType getTipoPet() {
-        return tipoPet;
+    public PetType getPetType() {
+        return petType;
     }
 
-    public void setTipoPet(PetType tipoPet) {
-        this.tipoPet = tipoPet;
+    public void setTipoPet(PetType petType) {
+        this.petType = petType;
     }
 
     public PetGender getPetGender() {
@@ -73,11 +79,14 @@ public class Pet {
         this.address = address;
     }
 
-    public int getYears() {
+    public double getYears() {
         return years;
     }
 
-    public void setYears(int years) {
+    public void setYears(double years) throws IllegalArgumentException {
+        if (years > 20) {
+            throw new IllegalArgumentException("Years cannot be more than 20");
+        }
         this.years = years;
     }
 
@@ -96,7 +105,14 @@ public class Pet {
         return race;
     }
 
-    public void setRace(String race) {
+    public void setRace(String race) throws IllegalArgumentException {
+        if (!race.matches("[a-zA-z0-9 ]*")) {
+            throw new IllegalArgumentException("Name cannot contain special characters");
+        }
         this.race = race;
+    }
+
+    public void fullName() {
+        String fullName = getName() + getLastName();
     }
 }
