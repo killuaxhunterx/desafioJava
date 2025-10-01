@@ -11,6 +11,9 @@ public class Main {
                 PetRegistration petRegistration = new PetRegistration();
                 petRegistration.registerPet();
                 petRegistration.writeRegisteredPetInFile();
+                break;
+            case 2:
+                Menu.chooseOptionsSearchingPetMenu();
         }
     }
 }

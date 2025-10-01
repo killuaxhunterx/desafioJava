@@ -125,11 +125,11 @@ public class PetRegistration {
                     timeNow.getYear()) +
                     String.valueOf(timeNow.getMonth().getValue()) + String.valueOf(timeNow.getDayOfMonth() +
                     "T" + String.valueOf(timeNow.getHour()) + String.valueOf(timeNow.getMinute()) +
-                    "-" + pet.getName().replaceAll("\\s", "")
+                    "-" + pet.getName()
                     + pet.getLastName().replaceAll("\\s", "")
             );
             try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("/home/arthur/IdeaProjects/Desafio/petsCadastrados/"+path))) {
-            bufferedWriter.write(1 + " - " + pet.getName() + pet.getLastName());
+            bufferedWriter.write(1 + " - " + pet.getName() + " " + pet.getLastName());
             bufferedWriter.newLine();
             bufferedWriter.write(2 + " - " + pet.getPetType());
             bufferedWriter.newLine();
