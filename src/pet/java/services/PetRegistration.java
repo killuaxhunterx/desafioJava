@@ -5,9 +5,8 @@ import pet.java.entities.Pet;
 import pet.java.entities.enums.PetGender;
 import pet.java.entities.enums.PetType;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.InputMismatchException;
 import java.util.List;
@@ -88,7 +87,7 @@ public class PetRegistration {
                                 break;
                             case 5:
                                 System.out.println(lines);
-                                years = input.nextInt();
+                                years = input.nextDouble();
                                 pet.setYears(years);
                                 lines = reader.readLine();
                                 break;
@@ -116,5 +115,37 @@ public class PetRegistration {
             System.out.print("Argument error: " + e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    public void writeRegisteredPetInFile() {
+        String path = "";
+        LocalDateTime timeNow = LocalDateTime.now();
+        for (Pet pet : getPetList()) {
+            path = String.valueOf(
+                    timeNow.getYear()) +
+                    String.valueOf(timeNow.getMonth().getValue()) + String.valueOf(timeNow.getDayOfMonth() +
+                    "T" + String.valueOf(timeNow.getHour()) + String.valueOf(timeNow.getMinute()) +
+                    "-" + pet.getName().replaceAll("\\s", "")
+                    + pet.getLastName().replaceAll("\\s", "")
+            );
+            try (BufferedWriter bufferedWriter = new BufferedWriter(new FileWriter("/home/arthur/IdeaProjects/Desafio/petsCadastrados/"+path))) {
+            bufferedWriter.write(1 + " - " + pet.getName() + pet.getLastName());
+            bufferedWriter.newLine();
+            bufferedWriter.write(2 + " - " + pet.getPetType());
+            bufferedWriter.newLine();
+            bufferedWriter.write(3 + " - " + pet.getPetGender());
+            bufferedWriter.newLine();
+            bufferedWriter.write(4 + " - Rua " + pet.getAddress().getStreet() + ", " + pet.getAddress().getHouseNumber() + ", " + pet.getAddress().getCity());
+            bufferedWriter.newLine();
+            bufferedWriter.write(5 + " - " + pet.getYears() + " anos");
+            bufferedWriter.newLine();
+            bufferedWriter.write(6 + " - " + pet.getWeight() + "kg");
+            bufferedWriter.newLine();
+            bufferedWriter.write(7 + " - " + pet.getRace());
+            } catch (IOException e) {
+                System.out.print("Error: " + e.getMessage());
+            }
+        }
+
     }
 }

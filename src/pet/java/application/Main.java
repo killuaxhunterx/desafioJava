@@ -10,6 +10,7 @@ public class Main {
             case 1:
                 PetRegistration petRegistration = new PetRegistration();
                 petRegistration.registerPet();
+                petRegistration.writeRegisteredPetInFile();
         }
     }
 }
