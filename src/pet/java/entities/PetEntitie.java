@@ -3,20 +3,20 @@ package pet.java.entities;
 import pet.java.entities.enums.PetGender;
 import pet.java.entities.enums.PetType;
 
-public class Pet {
+public class PetEntitie {
     private String name;
     private String lastName;
     private PetType petType;
     private PetGender petGender;
-    private Address address;
+    private AddressEntitie address;
     private double years;
     private double weight;
     private String race;
 
-    public Pet() {
+    public PetEntitie() {
     }
 
-    public Pet(String name, String lastName, PetType petType, PetGender petGender, Address address, double years, double weight, String race) {
+    public PetEntitie(String name, String lastName, PetType petType, PetGender petGender, AddressEntitie address, double years, double weight, String race) {
         this.name = name;
         this.lastName = lastName;
         this.petType = petType;
@@ -45,11 +45,11 @@ public class Pet {
         return name;
     }
 
-    public void setName(String name) throws IllegalArgumentException{
+    public void setName(String name) throws IllegalArgumentException {
         if (name.isEmpty()) {
             throw new IllegalArgumentException("Name cannot be empty");
         }
-        if (!name.matches("[a-zA-z0-9 ]*")) {
+        if (!name.matches("[a-zA-Z0-9 ]*")) {
             throw new IllegalArgumentException("Name cannot contain special characters");
         }
         this.name = name;
@@ -71,11 +71,11 @@ public class Pet {
         this.petGender = petGender;
     }
 
-    public Address getAddress() {
+    public AddressEntitie getAddress() {
         return address;
     }
 
-    public void setAddress(Address address) {
+    public void setAddress(AddressEntitie address) {
         this.address = address;
     }
 
@@ -114,5 +114,20 @@ public class Pet {
 
     public void fullName() {
         String fullName = getName() + getLastName();
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        stringBuilder.append(getName()).append(" - ");
+        stringBuilder.append(getPetType().toString()).append(" - ");
+        stringBuilder.append(getPetGender().toString()).append(" - ");
+        stringBuilder.append(getAddress().getStreet()).append(" - ");
+        stringBuilder.append(getAddress().getHouseNumber()).append(" - ");
+        stringBuilder.append(getAddress().getCity()).append(" - ");
+        stringBuilder.append(getYears()).append(" anos").append(" - ");
+        stringBuilder.append(getWeight()).append("kg").append(" - ");
+        stringBuilder.append(getRace());
+        return stringBuilder.toString();
     }
 }
