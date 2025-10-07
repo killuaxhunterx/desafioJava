@@ -26,6 +26,13 @@ public class Main {
                 } catch (IOException e) {
                     System.out.println("Error: " + e.getMessage());
                 }
+            case 3:
+                try {
+                    petService.deletePet(input);
+                    break;
+                } catch (IOException e) {
+                    System.out.println("Error: " + e.getMessage());
+                }
             case 4:
                 petService.searchPet(input);
                 break;

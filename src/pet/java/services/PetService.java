@@ -5,6 +5,7 @@ import pet.java.entities.enums.PetType;
 import pet.java.exceptions.PetEntitieNotFoundException;
 import pet.java.repository.PetRepository;
 import pet.java.utils.FileUtil;
+import pet.java.utils.StringUtil;
 
 import java.io.File;
 import java.io.IOException;
@@ -276,13 +277,14 @@ public class PetService {
         List<String> lines = new ArrayList<>();
         List<PetEntitie> foundPets = new ArrayList<>();
         FileUtil fileUtil = new FileUtil();
+        StringUtil stringUtil = new StringUtil();
         foundPets = searchPet(inputUdpate);
         if (petRepository.files != null) {
             for (File files : petRepository.files) {
                 String fileName = files.getName().split("-")[1];
-                String fileNameNormalized = Normalizer.normalize(fileName, Normalizer.Form.NFD).replaceAll("\\p{Mn}", "");
+                String fileNameNormalized = stringUtil.normalizeString(fileName);
                 for (PetEntitie pet : foundPets) {
-                    String petNameNormalized = Normalizer.normalize(pet.getName(), Normalizer.Form.NFD).replaceAll("\\p{Mn}", "");
+                    String petNameNormalized = stringUtil.normalizeString(pet.getName());
                     boolean fileNameContainsPetName = fileNameNormalized.toUpperCase().contains(petNameNormalized.toUpperCase().replaceAll("\\s+", ""));
                     boolean petNameContainsFileName = petNameNormalized.toUpperCase().contains(fileNameNormalized.toUpperCase().replaceAll("\\s+", ""));
                     if (fileNameContainsPetName || petNameContainsFileName) {
@@ -292,14 +294,14 @@ public class PetService {
                                 case 0:
                                     assert lines.get(i).contains(pet.getName()) : "False";
                                     System.out.println("Digite o novo nome e sobrenome: ");
-                                    inputUdpate.nextLine();
-                                    String name = inputUdpate.nextLine();
+                                    String name = inputUdpate.next();
                                     setName(name);
                                     lines.set(i, "1 - " + getName());
                                     break;
                                 case 3:
                                     assert lines.get(i).startsWith(pet.getAddress().fullAddress()) : "False";
                                     System.out.println("Digite o novo endereço: ");
+                                    inputUdpate.nextLine();
                                     setAddress(inputUdpate.nextLine());
                                     lines.set(i, "4 - " + getAddress());
                                     break;
@@ -330,6 +332,45 @@ public class PetService {
                         fileUtil.renameFile(oldPath, newPath);
                     }
                 }
+            }
+        }
+    }
+
+    public void deletePet(Scanner input) throws IOException{
+        List<PetEntitie> pets = new ArrayList<>();
+        FileUtil fileUtil = new FileUtil();
+        StringUtil stringUtil = new StringUtil();
+        String fileName;
+        String fileNameNormalized;
+        pets = petRepository.findAllPets();
+        int i = 1;
+        if (petRepository.files != null) {
+            for(PetEntitie pet : pets) {
+                String petString = i + " - " + pet;
+                System.out.println(petString);
+                i++;
+            }
+            i = 1;
+            System.out.println("Escolha o número do pet que deseja excluir: ");
+            int choice = input.nextInt();
+            for (PetEntitie pet : pets) {
+                String petString = i + " - " + pet;
+                if (petString.startsWith(String.valueOf(choice))) {
+                    System.out.println("Entrou: ");
+                    for(File files : petRepository.files) {
+                        fileName = files.getName().split("-")[1];
+                        fileNameNormalized = stringUtil.normalizeString(fileName);
+                        String petNameNormalized = stringUtil.normalizeString(pet.getName());
+                        boolean fileNameContainsPetName = fileNameNormalized.toUpperCase().contains(petNameNormalized.toUpperCase().replaceAll("\\s+", ""));
+                        boolean petNameContainsFileName = petNameNormalized.toUpperCase().contains(fileNameNormalized.toUpperCase().replaceAll("\\s+", ""));
+                        System.out.println(petNameNormalized.toUpperCase() + " " + fileNameNormalized);
+                        if (fileNameContainsPetName || petNameContainsFileName) {
+                            fileUtil.deleteFile(files.toPath());
+                            break;
+                        }
+                    }
+                }
+                i++;
             }
         }
     }

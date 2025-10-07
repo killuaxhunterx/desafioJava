@@ -13,6 +13,7 @@ public class FileUtil {
     public void updateContentInFile(Path path, List<String> lines) {
         try {
             Files.write(path, lines);
+            System.out.println("Arquivo atualizado com sucesso!");
         } catch (IOException e) {
             System.out.println("Error: " + e.getMessage());
         }
@@ -33,6 +34,15 @@ public class FileUtil {
         try {
             Files.move(oldPath, newPath);
             System.out.println("Arquivo renomeado com sucesso!");
+        } catch (IOException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+    }
+
+    public void deleteFile(Path path) {
+        try {
+            Files.delete(path);
+            System.out.println("Arquivo deletado com sucesso!");
         } catch (IOException e) {
             System.out.println("Error: " + e.getMessage());
         }
