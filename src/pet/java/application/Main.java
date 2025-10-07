@@ -36,6 +36,8 @@ public class Main {
             case 4:
                 petService.searchPet(input);
                 break;
+            case 5:
+                System.out.println("Sistema finalizado.");
         }
     }
 }
