@@ -2,8 +2,18 @@ package pet.java.services;
 
 import pet.java.entities.PetEntitie;
 import pet.java.entities.enums.PetType;
+import pet.java.exceptions.PetEntitieNotFoundException;
 import pet.java.repository.PetRepository;
+import pet.java.utils.FileUtil;
 
+import java.io.File;
+import java.io.IOException;
+import java.lang.reflect.Field;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.text.Normalizer;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -87,7 +97,9 @@ public class PetService {
         this.race = race;
     }
 
-    public void searchByType(Scanner input) {
+    public List<PetEntitie> searchByType() {
+        Scanner input = new Scanner(System.in);
+        List<PetEntitie> foundPets = new ArrayList<>();
         String petType;
         int i = 1;
         System.out.println("Digite o tipo de pet: (Gato/Cachorro)");
@@ -95,159 +107,228 @@ public class PetService {
         List<PetEntitie> allPets = petRepository.findAllPets();
         for (PetEntitie pet : allPets) {
             if (pet.getPetType().toString().toUpperCase().contains(petType.toUpperCase())) {
-                System.out.println(i + " - " +pet);
-                i++;
+                foundPets.add(pet);
             }
         }
+        return foundPets;
     }
 
-    public void searchPetByNameOrLastName(String nameOrLastName) {
-        List<PetEntitie> allPets = petRepository.findAllPets();
+    public List<PetEntitie> searchPetByNameOrLastName(String nameOrLastName) {
+        List<PetEntitie> foundPetsByType = searchByType();
+        List<PetEntitie> foundPets = new ArrayList<>();
         int i = 1;
-        for (PetEntitie pet : allPets) {
-            if (pet.getName().toUpperCase().contains(nameOrLastName.toUpperCase())
-            ) {
-                System.out.println(i + " - " +pet);
+        for (PetEntitie pet : foundPetsByType) {
+            if (pet.getName().toUpperCase().contains(nameOrLastName.toUpperCase())) {
+                System.out.println(i + " - " + pet);
                 i++;
+                foundPets.add(pet);
             }
         }
+        return foundPets;
     }
 
-    public void searchPetByYear(double years) {
-        List<PetEntitie> allPets = petRepository.findAllPets();
+    public List<PetEntitie> searchPetByYear(double years) {
+        List<PetEntitie> foundPetsByType = searchByType();
+        List<PetEntitie> foundPets = new ArrayList<>();
         int i = 1;
-        for (PetEntitie pet : allPets) {
+        for (PetEntitie pet : foundPetsByType) {
             if (pet.getYears() == years) {
-                System.out.println(i + " - " +pet);
+                System.out.println(i + " - " + pet);
                 i++;
+                foundPets.add(pet);
             }
         }
+        return foundPets;
     }
 
-    public void searchPetByWeight(double weight) {
-        List<PetEntitie> allPets = petRepository.findAllPets();
+    public List<PetEntitie> searchPetByWeight(double weight) {
+        List<PetEntitie> foundPetsByType = searchByType();
+        List<PetEntitie> foundPets = new ArrayList<>();
         int i = 1;
-        for (PetEntitie pet : allPets) {
+        for (PetEntitie pet : foundPetsByType) {
             if (pet.getWeight() == weight) {
-                System.out.println(i + " - " +pet);
+                System.out.println(i + " - " + pet);
                 i++;
+                foundPets.add(pet);
             }
         }
+        return foundPets;
     }
 
-    public void searchPetByRace(String race) {
-        List<PetEntitie> allPets = petRepository.findAllPets();
+    public List<PetEntitie> searchPetByRace(String race) {
+        List<PetEntitie> foundPetsByType = searchByType();
+        List<PetEntitie> foundPets = new ArrayList<>();
         int i = 1;
-        for (PetEntitie pet : allPets) {
+        for (PetEntitie pet : foundPetsByType) {
             if (pet.getRace().toUpperCase().contains(race.toUpperCase())) {
-                System.out.println(i + " - " +pet);
+                System.out.println(i + " - " + pet);
                 i++;
+                foundPets.add(pet);
             }
         }
+        return foundPets;
     }
 
-    public void searchPetByGender(String gender) {
-        List<PetEntitie> allPets = petRepository.findAllPets();
+    public List<PetEntitie> searchPetByGender(String gender) {
+        List<PetEntitie> foundPetsByType = searchByType();
+        List<PetEntitie> foundPets = new ArrayList<>();
         int i = 1;
-        for (PetEntitie pet : allPets) {
+        for (PetEntitie pet : foundPetsByType) {
             if (pet.getPetGender().toString().toUpperCase().contains(gender.toUpperCase())) {
-                System.out.println(i + " - " +pet);
+                System.out.println(i + " - " + pet);
+                foundPets.add(pet);
                 i++;
             }
         }
+        return foundPets;
     }
 
-    public void searchPetByAddress(String address) {
-        List<PetEntitie> allPets = petRepository.findAllPets();
+    public List<PetEntitie> searchPetByAddress(String address) {
+        List<PetEntitie> foundPetsByType = searchByType();
+        List<PetEntitie> foundPets = new ArrayList<>();
         int i = 1;
-        for (PetEntitie pet : allPets) {
+        for (PetEntitie pet : foundPetsByType) {
             if (pet.getAddress().fullAddress().toUpperCase().contains(address.toUpperCase())) {
-                System.out.println(i + " - " +pet);
+                System.out.println(i + " - " + pet);
+                foundPets.add(pet);
                 i++;
             }
         }
+        return foundPets;
     }
 
-    public void searchPetByNameAndOrLastNameAndYear(String name, String lastName, double year) {
-        List<PetEntitie> allPets = petRepository.findAllPets();
+    public List<PetEntitie> searchPetByNameAndOrLastNameAndYear(String name, String lastName, double year) {
+        List<PetEntitie> foundPetsByType = searchByType();
+        List<PetEntitie> foundPets = new ArrayList<>();
         int i = 1;
-        for (PetEntitie pet : allPets) {
-            if (pet.getName().toUpperCase().contains(name.toUpperCase()) && pet.getYears() == year) {
-                System.out.println(i + " - " +pet);
+        for (PetEntitie pet : foundPetsByType) {
+            if (pet.getName().toUpperCase().contains(name.toUpperCase())
+                    || pet.getLastName().toUpperCase().contains(lastName.toUpperCase()) && pet.getYears() == year) {
+                System.out.println(i + " - " + pet);
+                foundPets.add(pet);
                 i++;
             }
         }
+        return foundPets;
     }
 
-    public void searchPetByWeightAndYear(double weight, double year) {
-        List<PetEntitie> allPets = petRepository.findAllPets();
+    public List<PetEntitie> searchPetByWeightAndYear(double weight, double year) {
+        List<PetEntitie> foundPetsByType = searchByType();
+        List<PetEntitie> foundPets = new ArrayList<>();
         int i = 1;
-        for (PetEntitie pet : allPets) {
+        for (PetEntitie pet : foundPetsByType) {
             if (pet.getWeight() == weight && pet.getYears() == year) {
-                System.out.println(i + " - " +pet);
-                i++;            }
-
+                System.out.println(i + " - " + pet);
+                foundPets.add(pet);
+                i++;
+            }
         }
+        return foundPets;
     }
 
-    public void searchPet() {
-        List<Integer> parametersChoice = new ArrayList<>();
+    public List<PetEntitie> searchPet(Scanner input) {
+        List<PetEntitie> foundPets = new ArrayList<>();
+        int choice;
         MenuService menuService = new MenuService(petRepository);
-        parametersChoice = menuService.chooseOptionsSearchingPetMenu();
-        try (Scanner input = new Scanner(System.in)) {
-            for (int choice : parametersChoice) {
-                switch (choice) {
-                    case 1:
-                        searchByType(input);
-                        System.out.println("Digite o nome ou sobrenome do pet: ");
-                        setName(input.nextLine());
-                        searchPetByNameOrLastName(getName());
-                        break;
-                    case 2:
-                        searchByType(input);
-                        System.out.println("Digite o sexo do pet: ");
-                        setPetGender(input.nextLine());
-                        searchPetByGender(getPetGender());
-                        break;
-                    case 3:
-                        searchByType(input);
-                        System.out.println("Digite a idade do pet: ");
-                        setYears(input.nextDouble());
-                        searchPetByYear(getYears());
-                        break;
-                    case 4:
-                        searchByType(input);
-                        System.out.println("Digite o peso do pet: ");
-                        setWeight(input.nextDouble());
-                        searchPetByWeight(getWeight());
-                        break;
-                    case 5:
-                        searchByType(input);
-                        System.out.println("Digite a raça do pet: ");
-                        setRace(input.nextLine());
-                        searchPetByRace(getRace());
-                        break;
-                    case 6:
-                        searchByType(input);
-                        System.out.println("Digite o endereço do pet: ");
-                        setAddress(input.nextLine());
-                        searchPetByAddress(getAddress());
-                        break;
-                    case 7:
-                        searchByType(input);
-                        System.out.println("Digite o nome e/ou sobrenome e idade do pet: ");
-                        setName(input.nextLine());
-                        setLastName(input.nextLine());
-                        setYears(input.nextDouble());
-                        searchPetByNameAndOrLastNameAndYear(getName(), getLastName(), getYears());
-                        break;
-                    case 8:
-                        searchByType(input);
-                        System.out.println("Digite o peso e idade do pet: ");
-                        setWeight(input.nextDouble());
-                        setYears(input.nextDouble());
-                        searchPetByWeightAndYear(getWeight(), getYears());
-                        break;
+        choice = menuService.chooseOptionsSearchingPetMenu(input);
+        switch (choice) {
+            case 1:
+                System.out.println("Digite o nome ou sobrenome do pet: ");
+                input.nextLine();
+                setName(input.nextLine());
+                return searchPetByNameOrLastName(getName());
+            case 2:
+                System.out.println("Digite o sexo do pet: ");
+                setPetGender(input.nextLine());
+                return searchPetByGender(getPetGender());
+            case 3:
+                System.out.println("Digite a idade do pet: ");
+                setYears(input.nextDouble());
+                return searchPetByYear(getYears());
+            case 4:
+                System.out.println("Digite o peso do pet: ");
+                setWeight(input.nextDouble());
+                return searchPetByWeight(getWeight());
+            case 5:
+                System.out.println("Digite a raça do pet: ");
+                setRace(input.nextLine());
+                return searchPetByRace(getRace());
+            case 6:
+                System.out.println("Digite o endereço do pet: ");
+                setAddress(input.nextLine());
+                return searchPetByAddress(getAddress());
+            case 7:
+                System.out.println("Digite o nome e/ou sobrenome e idade do pet: ");
+                setName(input.nextLine());
+                setLastName(input.nextLine());
+                setYears(input.nextDouble());
+                return searchPetByNameAndOrLastNameAndYear(getName(), getLastName(), getYears());
+            case 8:
+                System.out.println("Digite o peso e idade do pet: ");
+                setWeight(input.nextDouble());
+                setYears(input.nextDouble());
+                return searchPetByWeightAndYear(getWeight(), getYears());
+        }
+        return foundPets;
+    }
+
+    public void updatePet(Scanner inputUdpate) throws IOException {
+        List<String> lines = new ArrayList<>();
+        List<PetEntitie> foundPets = new ArrayList<>();
+        FileUtil fileUtil = new FileUtil();
+        foundPets = searchPet(inputUdpate);
+        if (petRepository.files != null) {
+            for (File files : petRepository.files) {
+                String fileName = files.getName().split("-")[1];
+                String fileNameNormalized = Normalizer.normalize(fileName, Normalizer.Form.NFD).replaceAll("\\p{Mn}", "");
+                for (PetEntitie pet : foundPets) {
+                    String petNameNormalized = Normalizer.normalize(pet.getName(), Normalizer.Form.NFD).replaceAll("\\p{Mn}", "");
+                    boolean fileNameContainsPetName = fileNameNormalized.toUpperCase().contains(petNameNormalized.toUpperCase().replaceAll("\\s+", ""));
+                    boolean petNameContainsFileName = petNameNormalized.toUpperCase().contains(fileNameNormalized.toUpperCase().replaceAll("\\s+", ""));
+                    if (fileNameContainsPetName || petNameContainsFileName) {
+                        lines = Files.readAllLines(files.toPath());
+                        for (int i = 0; i < lines.size(); i++) {
+                            switch (i) {
+                                case 0:
+                                    assert lines.get(i).contains(pet.getName()) : "False";
+                                    System.out.println("Digite o novo nome e sobrenome: ");
+                                    inputUdpate.nextLine();
+                                    String name = inputUdpate.nextLine();
+                                    setName(name);
+                                    lines.set(i, "1 - " + getName());
+                                    break;
+                                case 3:
+                                    assert lines.get(i).startsWith(pet.getAddress().fullAddress()) : "False";
+                                    System.out.println("Digite o novo endereço: ");
+                                    setAddress(inputUdpate.nextLine());
+                                    lines.set(i, "4 - " + getAddress());
+                                    break;
+                                case 4:
+                                    assert lines.get(i).startsWith(String.valueOf(pet.getYears())) : "False";
+                                    System.out.println("Digite a nova idade: ");
+                                    setYears(inputUdpate.nextDouble());
+                                    lines.set(i, "5 - " + getYears() + " anos");
+                                    break;
+                                case 5:
+                                    assert lines.get(i).startsWith(String.valueOf(pet.getWeight())) : "False";
+                                    System.out.println("Digite o novo peso: ");
+                                    setWeight(inputUdpate.nextDouble());
+                                    lines.set(i, "6 - " + getWeight() + "kg");
+                                    break;
+                                case 6:
+                                    assert lines.get(i).startsWith(pet.getRace()) : "False";
+                                    System.out.println("Digite a nova raça: ");
+                                    inputUdpate.nextLine();
+                                    setRace(inputUdpate.nextLine());
+                                    lines.set(i, "7 - "  + getRace());
+                                    break;
+                            }
+                        }
+                        fileUtil.updateContentInFile(files.toPath(), lines);
+                        Path oldPath = Paths.get(files.getPath());
+                        Path newPath = Paths.get( petRepository.pathToWrite + fileUtil.getPath(getName()));
+                        fileUtil.renameFile(oldPath, newPath);
+                    }
                 }
             }
         }

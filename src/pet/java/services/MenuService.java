@@ -33,9 +33,8 @@ public class MenuService {
         );
     }
 
-    public int chooseOptionsMenu() {
+    public int chooseOptionsMenu(Scanner input) {
         int choice;
-        Scanner input = new Scanner(System.in);
         showMenu();
         choice = input.nextInt();
         try {
@@ -63,33 +62,29 @@ public class MenuService {
         );
     }
 
-    public List<Integer> chooseOptionsSearchingPetMenu() {
+    public int chooseOptionsSearchingPetMenu(Scanner input) {
         int choice;
-        List<Integer> choicesList = new ArrayList<>();
-        Scanner input = new Scanner(System.in);
         System.out.println("Escolha os criterios para procurar pelo seu pet: ");
         System.out.println("(Digite zero para sair do menu após escolher)");
         showSearchingPetMenu();
         choice = input.nextInt();
-        choicesList.add(choice);
         try {
             while (choice != 0) {
                 choice = input.nextInt();
-                choicesList.add(choice);
+                return choice;
             }
         } catch (InputMismatchException e) {
             System.out.println("Error: " + e.getMessage());
         }
-        return choicesList;
+        return choice;
     }
 
-    public void readDataPet() {
+    public void readDataPet(Scanner input) {
         String name, lastName, petTypeString, petGenderString, city, race, houseNumber, street;
         double weight, years;
-        Scanner input = new Scanner(System.in);
         PetEntitie pet = new PetEntitie();
         AddressEntitie address = new AddressEntitie();
-        try (BufferedReader reader = petRepository.readFile()){
+        try (BufferedReader reader = petRepository.reader()){
             String lines = reader.readLine();
             for (int i = 1; i <= 7; i++) {
                 if (lines != null) {

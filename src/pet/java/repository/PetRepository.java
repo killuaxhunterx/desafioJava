@@ -10,7 +10,6 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class PetRepository {
     private List<PetEntitie> petList = new ArrayList<>();
     public final String pathToWrite = "/home/arthur/IdeaProjects/Desafio/petsCadastrados/";
@@ -41,12 +40,12 @@ public class PetRepository {
         getPetList().remove(pet);
     }
 
-    public BufferedReader readFile() throws FileNotFoundException {
+    public BufferedReader reader() throws FileNotFoundException {
         BufferedReader reader = new BufferedReader(new FileReader(pathToRead));
         return reader;
     }
 
-    public BufferedWriter writeFile(String path) throws IOException {
+    public BufferedWriter writer(String path) throws IOException {
         BufferedWriter writer = new BufferedWriter(new FileWriter(pathToWrite + path));
         return writer;
     }
@@ -63,7 +62,7 @@ public class PetRepository {
                 "-" + pet.getName()
                 + pet.getLastName().replaceAll("\\s", "")
             );
-            try (BufferedWriter bufferedWriter = writeFile(path)) {
+            try (BufferedWriter bufferedWriter = writer(path)) {
                 bufferedWriter.write(1 + " - " + pet.getName() + " " + pet.getLastName());
                 bufferedWriter.newLine();
                 bufferedWriter.write(2 + " - " + pet.getPetType());
